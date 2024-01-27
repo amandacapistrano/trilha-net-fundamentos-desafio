@@ -4,7 +4,11 @@ namespace DesafioFundamentos.Models
     {
         private decimal precoInicial = 0;
         private decimal precoPorHora = 0;
+    
         private List<string> veiculos = new List<string>();
+
+        private Stack<string> historicoVeiculos = new Stack<string>();
+
 
         public Estacionamento(decimal precoInicial, decimal precoPorHora)
         {
@@ -18,7 +22,11 @@ namespace DesafioFundamentos.Models
             // *IMPLEMENTE AQUI*
             Console.WriteLine("Digite a placa do veículo para estacionar:");
             string novoVeiculo = Console.ReadLine().ToUpper();
-            veiculos.Add(novoVeiculo);
+            if(veiculos.Contains(novoVeiculo)){
+                System.Console.WriteLine("Verifique sua digitação! A placa já está no sistema!");
+            }else{
+                veiculos.Add(novoVeiculo);
+            }
 
         }
 
@@ -44,13 +52,28 @@ namespace DesafioFundamentos.Models
                     // TODO: Remover a placa digitada da lista de veículos
                     // *IMPLEMENTE AQUI*
                     veiculos.Remove(placa.ToUpper());
-
-                    Console.WriteLine($"O veículo {placa} foi removido e o preço total foi de: R$ {valorTotal}");
+                    Console.WriteLine($"O veículo {placa} foi removido e o preço total foi de: {valorTotal:C}");
+                    historicoVeiculos.Push($"Placa: {placa} - Valor pago:{valorTotal:C} ");
             }
             else
             {
                 Console.WriteLine("Desculpe, esse veículo não está estacionado aqui. Confira se digitou a placa corretamente");
             }
+        }
+
+
+        public void HistoricoVeiculos()
+        {
+            System.Console.WriteLine("Histórico dos últimos veículos estacionados:");
+            if(historicoVeiculos.Any()){
+                foreach (var veiculo in historicoVeiculos)
+                {
+                    System.Console.WriteLine(veiculo);
+                }
+            }else{
+                System.Console.WriteLine("Sem histórico de veículos!");
+            }
+           
         }
 
         public void ListarVeiculos()
